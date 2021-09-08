@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:parking/modals/others/vehicle_type.dart';
 
 class Vehicle {
@@ -16,6 +18,89 @@ class Vehicle {
     this.isPrimary,
     this.name,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is Vehicle && other.name == name && other.number == number;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'userId': user,
+      'number': number,
+      'isPrimary': isPrimary,
+      'vehicleType': encodeVehicle(type),
+    };
+  }
+
+  static Vehicle fromMap(Map<String, dynamic> map, String id) {
+    return Vehicle(
+      id: id,
+      isPrimary: map['isPrimary'],
+      name: map['name'],
+      number: map['number'],
+      type: decodeVehicle(map['vehicleType']),
+      user: map['userId'],
+    );
+  }
+
+  delete() {
+    FirebaseFirestore.instance.collection('vehicles').doc(id).delete();
+  }
+
+  Future<String> add() async {
+    DocumentReference<Map<String, dynamic>> document =
+        await FirebaseFirestore.instance.collection('vehicles').add(toMap());
+    return document.id;
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>>
+      currentUserVehiclesStream() {
+    return FirebaseFirestore.instance
+        .collection('vehicles')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .snapshots();
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>>
+      currentUserPrimaryVehiclesStream() {
+    return FirebaseFirestore.instance
+        .collection('vehicles')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('isPrimary', isEqualTo: true)
+        .snapshots();
+  }
+
+  static List<Vehicle> listFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((e) => Vehicle.fromMap(e.data(), e.id)).toList();
+  }
+
+  static Future<Vehicle> getCurrentPrimaryVehicle() async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection('vehicles')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('isPrimary', isEqualTo: true)
+        .get();
+    print(snapshot.docs.length);
+    return Vehicle.fromMap(snapshot.docs.first.data(), snapshot.docs.first.id);
+  }
+
+  static changePrimary(String vehicleID) async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection('vehicles')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get();
+    for (var element in snapshot.docs) {
+      element.reference.update({
+        'isPrimary': element.id == vehicleID ? true : false,
+      });
+    }
+  }
 }
 
 var dummyVehicles = [
@@ -39,22 +124,6 @@ var dummyVehicles = [
     id: '1',
     name: 'Audi 800',
     number: 'DL-05-8231',
-    type: VehicleType.car,
-    user: 'pratham',
-    isPrimary: false,
-  ),
-  Vehicle(
-    id: '1',
-    name: 'Pulsar 350',
-    number: 'MH-04-8342',
-    type: VehicleType.car,
-    user: 'pratham',
-    isPrimary: false,
-  ),
-  Vehicle(
-    id: '1',
-    name: 'Mercedes v60',
-    number: 'KL-07-1936',
     type: VehicleType.car,
     user: 'pratham',
     isPrimary: false,

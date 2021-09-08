@@ -10,10 +10,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 class DisplayCodePage extends StatefulWidget {
   const DisplayCodePage({
     Key key,
-    this.vehicles,
+    this.vehicle,
     this.area,
   }) : super(key: key);
-  final List<Vehicle> vehicles;
+  final Vehicle vehicle;
   final ParkingArea area;
   @override
   _DisplayCodePageState createState() => _DisplayCodePageState();
@@ -64,7 +64,7 @@ class _DisplayCodePageState extends State<DisplayCodePage> {
                       ),
                     ),
                     content: Text(
-                      'This action will terminate the booking process and you will be redirected to the hompage. If you just want to visit the previous page, press cancel followed by back button.',
+                      'This action will terminate the booking process and you will be redirected to the homepage. If you just want to visit the previous page, press cancel followed by back button.',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w300,
                       ),
@@ -132,101 +132,108 @@ class _DisplayCodePageState extends State<DisplayCodePage> {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Center(
-            child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              height: MediaQuery.of(context).size.width * 0.85,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 0),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    color: Colors.blue.shade700,
-                  ),
-                ],
-              ),
-              width: MediaQuery.of(context).size.width * 0.80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 15,
-                      bottom: 5,
+          Expanded(
+            flex: 6,
+            child: Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 0),
+                      spreadRadius: 3,
+                      blurRadius: 10,
+                      color: Colors.blue.shade700,
                     ),
-                    child: Text(
-                      'QR CODE',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 30,
-                      ),
-                    ),
-                  ),
-                  QrImage(
-                    data: widget.vehicles
-                        .map((e) => e.number)
-                        .toList()
-                        .toString(),
-                    size: 200,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      widget.area.name,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: RichText(
-                      text: TextSpan(
-                        text: '₹ ',
-                        style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                  ],
+                ),
+                width: MediaQuery.of(context).size.width * 0.80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text(
+                          'QR CODE',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
                         ),
-                        children: [
-                          TextSpan(
-                            text: widget.area.charges.toString() + '/6hrs',
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: QrImage(
+                        data: widget.vehicle.number.toString(),
+                        size: MediaQuery.of(context).size.height * 0.30,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          widget.area.name,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 3, bottom: 5),
+                        child: RichText(
+                          text: TextSpan(
+                            text: '₹ ',
                             style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
-                          )
-                        ],
+                            children: [
+                              TextSpan(
+                                text: widget.area.charges.toString() + '/6hrs',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              right: MediaQuery.of(context).size.width * 0.05,
-              left: MediaQuery.of(context).size.width * 0.05,
-              top: 20,
-            ),
-            child: Text(
-              'Show this QR code to the attendee at the parking area. He will verify your details, then pay from your wallet balance or cash.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 14,
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.05,
+                top: 20,
+              ),
+              child: Text(
+                'Show this QR code to the attendee at the parking area. He will verify your details, then pay from your wallet balance or cash.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
-          const Spacer(),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 80,

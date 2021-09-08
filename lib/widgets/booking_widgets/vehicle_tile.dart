@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:parking/modals/database_modals/vehicle.dart';
 
 class VehicleTile extends StatefulWidget {
-  const VehicleTile({Key key, this.vehicle}) : super(key: key);
+  const VehicleTile({Key key, this.vehicle, this.onDelete}) : super(key: key);
   final Vehicle vehicle;
+  final VoidCallback onDelete;
   @override
   _VehicleTileState createState() => _VehicleTileState();
 }
@@ -50,7 +51,7 @@ class _VehicleTileState extends State<VehicleTile> {
           ),
           const Spacer(),
           TextButton(
-            onPressed: () {},
+            onPressed: widget.onDelete,
             style: ButtonStyle(
               overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(
                 0.05,

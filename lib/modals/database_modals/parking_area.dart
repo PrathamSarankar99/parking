@@ -11,6 +11,7 @@ class ParkingArea {
   final String name;
   final Address address;
   final GeoFirePoint location;
+  final List<String> images;
   final Owner owner;
   final int charges;
 
@@ -20,6 +21,7 @@ class ParkingArea {
     @required this.owner,
     @required this.address,
     @required this.name,
+    @required this.images,
     @required this.charges,
   });
 
@@ -37,6 +39,7 @@ class ParkingArea {
       'location': location.data,
       'ownerName': owner.name,
       'ownerMail': owner.mailId,
+      'images': images,
       'ownerContactNo': owner.contactNumber,
       'charges': charges,
     };
@@ -67,6 +70,7 @@ class ParkingArea {
       address: address,
       name: map['name'],
       charges: map['charges'],
+      images: map['images'],
     );
   }
 

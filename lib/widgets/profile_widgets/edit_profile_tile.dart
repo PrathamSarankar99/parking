@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfileTile extends StatefulWidget {
-  const ProfileTile({Key key, this.title, this.content}) : super(key: key);
+class EditProfileTile extends StatelessWidget {
+  const EditProfileTile({Key key, this.title, this.hintText, this.controller})
+      : super(key: key);
   final String title;
-  final String content;
-  @override
-  _ProfileTileState createState() => _ProfileTileState();
-}
-
-class _ProfileTileState extends State<ProfileTile> {
+  final String hintText;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +19,7 @@ class _ProfileTileState extends State<ProfileTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.title,
+            title,
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.grey.shade700,
@@ -36,14 +33,16 @@ class _ProfileTileState extends State<ProfileTile> {
               color: Colors.blue.shade50,
               borderRadius: BorderRadius.circular(0),
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.content,
-                  style: GoogleFonts.poppins(),
-                ),
+            child: TextField(
+              controller: controller,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+              ),
+              decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding:
+                    const EdgeInsets.only(left: 10, right: 10, top: 10),
+                border: InputBorder.none,
               ),
             ),
           )

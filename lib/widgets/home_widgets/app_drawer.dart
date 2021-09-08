@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parking/screens/authscreens/authscreen.dart';
+import 'package:parking/screens/homescreens/hometabs/find_parking_tab.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({Key key, @required this.changeTab}) : super(key: key);
@@ -87,7 +90,21 @@ class _AppDrawerState extends State<AppDrawer> {
               data: Icons.search_outlined,
               text: 'Find Parking',
               onTap: () {
-                widget.changeTab(2);
+                Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return FindParkingTab(
+                      changeTab: widget.changeTab,
+                      isPushed: true,
+                    );
+                  },
+                ));
+              },
+            ),
+            DrawerTile(
+              data: CupertinoIcons.car_detailed,
+              text: 'My Vehicles',
+              onTap: () {
+                widget.changeTab(10);
                 Navigator.pop(context);
               },
             ),
@@ -150,10 +167,13 @@ class _AppDrawerState extends State<AppDrawer> {
             DrawerTile(
               data: Icons.exit_to_app,
               text: 'Logout',
-              onTap: () {
-                setState(() {
-                  FirebaseAuth.instance.signOut();
-                });
+              onTap: () async {
+                Navigator.pushReplacement(context, PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return AuthScreen();
+                  },
+                ));
+                await FirebaseAuth.instance.signOut();
               },
             ),
             SizedBox(

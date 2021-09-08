@@ -89,22 +89,29 @@ class _HomeTabState extends State<HomeTab> {
                           text: 'Parking',
                           assetPath: 'assets/images/parking.png',
                           onTap: () {
-                            widget.changeTab(2);
+                            Navigator.of(context).push(PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return FindParkingTab(
+                                  changeTab: widget.changeTab,
+                                  isPushed: true,
+                                );
+                              },
+                            ));
                           },
                         ),
                         HomeTabCard(
-                          text: 'Event Parking',
-                          assetPath: 'assets/images/ticket.png',
+                          text: 'My Wallet',
+                          assetPath: 'assets/images/wallet.png',
                           onTap: () {
-                            // Navigator.of(context).push(PageRouteBuilder(
-                            //   pageBuilder:
-                            //       (context, animation, secondaryAnimation) {
-                            //     return EventParkingTab(
-                            //       changeTab: widget.changeTab,
-                            //       isPushed: true,
-                            //     );
-                            //   },
-                            // ));
+                            widget.changeTab(4);
+                          },
+                        ),
+                        HomeTabCard(
+                          text: 'My Vehicles',
+                          assetPath: 'assets/images/vehicles.png',
+                          onTap: () {
+                            widget.changeTab(10);
                           },
                         ),
                         HomeTabCard(

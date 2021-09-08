@@ -12,8 +12,10 @@ class FindParkingTab extends StatefulWidget {
   const FindParkingTab({
     Key key,
     @required this.changeTab,
+    this.isPushed = false,
   }) : super(key: key);
   final Function(int) changeTab;
+  final bool isPushed;
   @override
   _FindParkingTabState createState() => _FindParkingTabState();
 }
@@ -40,7 +42,7 @@ class _FindParkingTabState extends State<FindParkingTab> {
     return WillPopScope(
       onWillPop: () async {
         widget.changeTab(0);
-        return false;
+        return widget.isPushed;
       },
       child: Scaffold(
         key: globalKey,
@@ -97,7 +99,9 @@ class _FindParkingTabState extends State<FindParkingTab> {
 
   @override
   void dispose() {
-    controller.dispose();
+    if (controller != null) {
+      controller.dispose();
+    }
     super.dispose();
   }
 

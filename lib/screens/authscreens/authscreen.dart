@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:parking/screens/authscreens/authtabs/logintab.dart';
 import 'package:parking/screens/authscreens/authtabs/otptab.dart';
+import 'package:parking/screens/homescreens/homescreen.dart';
 import 'package:parking/utils/helpers/toast_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:parking/modals/database_modals/user.dart' as prkng;
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -17,6 +20,21 @@ class _AuthScreenState extends State<AuthScreen> {
   String verificationId;
   String phoneNo;
   int forceResendingToken;
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    if (mounted) {
+      super.dispose();
+    }
+  }
+
   @override
   void initState() {
     isOTPsent = false;
@@ -49,10 +67,24 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       PhoneAuthCredential authCredential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: otp);
-      await FirebaseAuth.instance.signInWithCredential(authCredential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(authCredential);
+      if (userCredential.additionalUserInfo.isNewUser) {
+        uploadUserData(userCredential.user);
+      }
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return const HomeScreen();
+        },
+      ));
     } on FirebaseAuthException catch (error) {
       showCodeToast(error.code);
     }
+  }
+
+  uploadUserData(User user) {
+    var data = prkng.User.fromFirebaseUser(user).toMap();
+    FirebaseFirestore.instance.collection('users').doc(user.uid).set(data);
   }
 
   sendOTP(String phoneNo) {

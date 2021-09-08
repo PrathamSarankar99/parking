@@ -21,6 +21,7 @@ class _ParkingAreaDescriptionState extends State<ParkingAreaDescription> {
         right: 10,
         left: 10,
       ),
+      padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -32,28 +33,9 @@ class _ParkingAreaDescriptionState extends State<ParkingAreaDescription> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Hero(
-                tag: 'PHOTO',
-                child: Container(
-                  height: MediaQuery.of(context).size.width * 0.40,
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.35),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.photo_library_outlined,
-                    size: 60,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
               Expanded(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.40,
+                  height: MediaQuery.of(context).size.width * 0.45,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +57,7 @@ class _ParkingAreaDescriptionState extends State<ParkingAreaDescription> {
                         builder: (context, snapshot) {
                           return Padding(
                             padding: const EdgeInsets.only(
-                                left: 5, top: 2, bottom: 5),
+                                left: 5, top: 5, bottom: 5),
                             child: Text(
                               !snapshot.hasData
                                   ? 'Fetching address ...'
@@ -89,7 +71,7 @@ class _ParkingAreaDescriptionState extends State<ParkingAreaDescription> {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 5),
+                        padding: const EdgeInsets.only(left: 5, top: 10),
                         child: RichText(
                           text: TextSpan(
                             text: '₹ ',

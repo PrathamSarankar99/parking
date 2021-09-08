@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parking/screens/homescreens/hometabs/about_us_tab.dart';
+import 'package:parking/screens/homescreens/hometabs/my_vehicles_tab.dart';
+import 'package:parking/screens/profilescreens/edit_profile.dart';
 import 'package:parking/screens/homescreens/hometabs/find_parking_tab.dart';
 import 'package:parking/screens/homescreens/hometabs/my_wallet.dart';
 import 'package:parking/screens/homescreens/hometabs/notification_tab.dart';
@@ -52,6 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
         changeTab: changeTab,
       ),
       SupportTab(
+        changeTab: changeTab,
+      ),
+      MyVehiclesTab(
         changeTab: changeTab,
       ),
     ];

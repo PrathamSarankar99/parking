@@ -5,13 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 showCodeToast(String msg) {
   Fluttertoast.showToast(
     msg: codeToText(msg),
-    backgroundColor: Colors.brown.shade900,
+    backgroundColor: Colors.grey.shade400,
   );
 }
 
 showToast(String msg) {
   Fluttertoast.showToast(
     msg: msg,
-    backgroundColor: Colors.brown.shade900,
+    backgroundColor: Colors.grey.shade400,
   );
 }
